@@ -1,0 +1,160 @@
+body {
+    font-family: 'Abel', sans-serif;
+}
+
+/* 인덱스 페이지 관련 CSS */
+
+.navbar {
+    background: rgba(255, 72, 0, 0.568);
+}
+.logo-image {
+    width: 150px;
+    height: 60;
+}
+.logo {
+    font-family: 'Oswald', sans-serif;
+}
+
+.bg-main {
+	width: 100%;
+    height: 600px;
+    padding: 0 !important;
+	/*
+    width: 100%;
+    background-image: url(../images/forest.jpg);
+    background-repeat: no-repeat;
+    background-position: top center;
+    background-size: cover;
+    */
+}
+
+.bg-main img {
+    display: block;
+    width: 100%;
+    height: inherit;
+}
+
+.footer {
+    border-top: 1px solid gray;
+    border-bottom: 1px double lightgray;
+    padding: 25px 0;
+    margin-top: 50px;
+    font-weight: 800;
+    font-size: 18px;
+}
+
+.footer div.container {
+    margin: 0 auto;
+}
+
+.footer ul.social img {
+    display: inline-block;
+    width: 40px;
+    margin-right: 15px;
+}
+
+
+/* header 관련 */
+a.withUsLink {
+   
+}
+a.withUsLink:hover {
+   background: #343A40;
+   color: white;
+}
+
+
+/* 게시판 관련 CSS*/
+
+div.virtual-box {
+    margin-bottom: 120px;
+}
+
+
+/* 게시글 쓰기 (업로드 관련)*/
+.fileDrop {
+   height: 100px;
+   border: 1px dotted gray;
+   margin: auto;
+}
+
+ul.uploadedList li {
+   list-style: none;
+   float: left;
+   padding: 0 10px;
+}
+
+ul.uploadedList li div.fileName a.fileName-link {
+   text-decoration: none;
+   color: black;
+}
+
+.has-img {
+   height: 100px !important;
+}
+
+
+
+
+/* 게시글 목록 */
+.container span.title {
+    font-weight: 800;
+    font-size: 2.4rem;
+    color: rgba(0, 0, 0, 0.650);
+    letter-spacing: 5px;
+}
+
+table.table-border {
+    border: 1px solid darkgray;
+}
+
+/* 페이징 처리 */
+#page-prev, #page-next {
+    background: #343A40;
+    color: white;
+}
+
+.page-link.page-custom {
+    background: lightgray;
+    height: 40px;
+    color: darkgray;
+}
+
+.page-active {
+	background: #343A40 !important;
+	color: white !important;
+}
+
+
+/* 게시글 상세 조회 */
+.article-content {
+    min-height: 400px;              /* 400이 넘으면 자동으로 늘어남 */
+    border: 1px solid lightgray;
+    padding: 20px;
+}
+.last-update {
+    padding-top: 10px;
+    font-weight: 500;
+}
+
+.btn-group a {
+    padding-top: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

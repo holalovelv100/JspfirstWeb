@@ -8,14 +8,14 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 public class AuthInterceptor extends HandlerInterceptorAdapter implements SessionNames {
 
-	// 회원 인증이 필요한 페이지에 진입할 때 인증처리를 수행하는 인터셉터의 사전처리 메서드
+	//会員認証が必要なページに入る時、認証処理するインターセプターの前処理メソッド
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
 			throws Exception {
 		
 		HttpSession session = request.getSession();
 		
-		// 인증이 안된 경우에 수행할 일
+		//認証されていない場合にすること
 		if(session.getAttribute(LOGIN) == null) {
 
 			String reqUri = request.getRequestURI(); // /freeboard

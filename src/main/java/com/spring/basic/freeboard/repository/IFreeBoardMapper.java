@@ -8,34 +8,34 @@ import com.spring.basic.freeboard.domain.FreeBoard;
 
 public interface IFreeBoardMapper {
 	
-	// CRUD관련 추상 메서드 선언.
-	// 1. create : 글 쓰기 기능.
+	//CRUD関連の抽象メソッドの宣言
+	// 1. create : 書き物書く機能
 	void create(FreeBoard article);
-	// 1-b. addFile: 파일 첨부 기능
+	// 1-b. addFile: ファイルの添付機能
 	void addFile(String fileName);
 
-	// 2. read : 조회 기능(
-	//	- a: single row -> 특정 게시글 조회
-	//	- b: multi row -> 게시글 목록 조회
-	FreeBoard selectOne(Integer boardId); // 조회라면 결과가 있어야 하니까 FreeBoard 타입
+	// 2. read : 照会機能
+	//	- a: single row -> 特定な投稿の照会
+	//	- b: multi row -> 投稿リストの照会
+	FreeBoard selectOne(Integer boardId); //照会なら結果が要るのでFreeBoard　タイプ
 	List<String> getFileNames(Integer boardId);
 	
 	List<FreeBoard> selectAll(Search paging);
 	
-	Integer countArticles(Search paging);  // 총 게시물 수 구하기
+	Integer countArticles(Search paging);  //総投稿の数を求める
 	
-	// 3. update: 글 수정 기능
-	void update(FreeBoard article);	// FreeBoard객체가 가지고있다. article이름은 내맘대로
+	// 3. update: 書き物の修正機能
+	void update(FreeBoard article);	// FreeBoardオブジェクトが持っている
 	
-	// 댓글개수 상승, 하락 처리
+	//コメントの上がり下がりの処理
 	void updateReplyCnt(Map<String, Object> datas);		
-	// Integer count, Integer boardId 두개를 넣기에는....묶어서 보내기위해 클래스를 또 만들기엔.... 그냥 맵을 이용하기~
-	// 댓글 인서트 하고 댓글 등록버튼 클릭시 요청이 발생하고 댓글 쓰기 요청 처리
+	// Integer count、Integer boardId　マップを使用
+	//コメントをinsertしてコメントの登録ボタンをクリックする時、要請が発生してコメントを書く要請の処理
 	
-	// 조회수 상승 처리
+	//照会数の上がり処理
 	void updateViewCnt(Integer boardId);
 	
-	// 4. delete : 글 삭제 기능
+	// 4. delete : 書き物の除去機能
 	void delete(Integer boardId);
 	
 	void deleteFileNames(Integer boardId);

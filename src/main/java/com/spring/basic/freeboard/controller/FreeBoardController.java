@@ -22,7 +22,7 @@ import com.spring.basic.freeboard.domain.FreeBoard;
 import com.spring.basic.freeboard.service.IFreeBoardService;
 import com.spring.basic.freeboardreply.service.IFreeBoardReplyService;
 
-// 스프링 컨테이너에 해당 컨트롤러를 빈으로 등록
+//springのコンテナに該当するコントローラをbeanで登録。
 @RestController
 public class FreeBoardController {
 	
@@ -34,30 +34,30 @@ public class FreeBoardController {
 	@Autowired
 	private IFreeBoardReplyService replyService;
 	
-	// 게시글 목록 요청에 대한 처리
+	//投稿文のリスト要請、処理
 	// # /freeboard/all/14
-	// # /freeboard/all/1?keyword=안녕&condition=content     // 내용에서 '안녕'이란 키워드 찾기.
+	// # /freeboard/all/1?keyword=おはよう&condition=content  //内容中「おはよう」というキーワードを見つける。
 	@GetMapping("/freeboard/all/{page}")
 	public ModelAndView list(@PathVariable Integer page, 
-							@ModelAttribute("search") Search paging) {		// Page paging은 자동으로 new 객체를 만들어서.Page.java의 생성자를 부른다.
+							@ModelAttribute("search") Search paging) {	//Page pagingは自動で新しいオブジェクトを作ってPage.javaのコンストラクタを呼ぶ。
 		
 		ModelAndView mv = new ModelAndView();
 		
 		
 		paging.setPage(page);
-//		page = (page - 1) * 10;		// 페이징에서 처리하도록 하자.
+//		page = (page - 1) * 10;		//ページングで処理
 		
 		List<FreeBoard> articles = boardService.selectAll(paging);
-//		System.out.println("### 컨트롤러가 받아온 데이터 목록 ###");
-//		articles.forEach(acs -> System.out.println(acs));   // 지저분 하니까 주석~
+//		System.out.println("###　コントローラがもらったデータのリスト ###");
+//		articles.forEach(acs -> System.out.println(acs));
 		
-		// 페이지 계산을 위한 객체 생성
+		//ページの計算のためなオブジェクト生成
 		PageCreator pc = new PageCreator(paging, boardService.countArticles(paging));
-		System.out.println("페이징 정보: " + pc);
+		System.out.println("ページングの情報: " + pc);
 		
 		
-		// DB에서 가져온 데이터 화면으로 전송(리턴되면 mv.을 가지고 간다)
-		mv.addObject("articles", articles);		// key와 value값
+		//DBから持ってくるデータを画面へ伝送(returnされると「mv.~」を持っていく)
+		mv.addObject("articles", articles);		// keyと value
 		mv.addObject("pc", pc);
 		
 		mv.setViewName("freeboard/list");
@@ -65,18 +65,18 @@ public class FreeBoardController {
 		return mv;
 	}
 	
-	// 게시글 상세조회에 대한 요청 처리
-	//@ModelAttribute는 요청시 전달된 데이터를 응답시에 view페이지에 그대로 전달함.
-	@GetMapping("/freeboard/{boardId}")		// 중괄호를 사용하기 위해 @PathVariable 를 사용한다.
+	//投稿文の詳細照会について要請処理
+	//@ModelAttributeは要請の時伝達されたデータを応答の時、viewページに伝達。
+	@GetMapping("/freeboard/{boardId}")	//中括弧　->@PathVariable
 	public ModelAndView content(@PathVariable Integer boardId, 
-								@ModelAttribute("search") Search paging) { 		// boardId는 상단의 {boardId}
-								// ("paging") 뒤의 이름이 같으면 작성하지 않아도 된다.
+								@ModelAttribute("search") Search paging) { 	// boardId　= {boardId}
+								// ("paging")　後の名前が同じであれば作成しなくても済む。
 		ModelAndView mv = new ModelAndView();
 		
-		paging.setCountPerPage(3);		// 3개씩 보여주기 고정으로 한다. 여기주석하고 주소창에 파라미터 countPerPage=숫자를 넣는다면 숫자 만큼 댓글수가 보여진다.
+		paging.setCountPerPage(3);	//3つづつ見せられ(固定)。
 		Map<String, Object> datas = boardService.selectOne(boardId, paging);
 		
-		// 페이징 알고리즘을 위한 PageCreator객체 생성
+		//ページングのアルゴリズムのためなPageCreatorオブジェクト生成
 		//PageCreator pc = new PageCreator(paging, replyService.countReplies(boardId));
 		
 		
@@ -89,37 +89,36 @@ public class FreeBoardController {
 		return mv;
 	}
 	
-	//게시글 상세조회 요청 시 첨부파일 목록을 불러요는 요청 처리 
-		@GetMapping("/freeboard/file/{boardId}")
-		public ResponseEntity<List<String>> getFileRequest(@PathVariable Integer boardId) {
-			
-			try {
-				List<String> fileNames = boardService.getFileNames(boardId);
-				return new ResponseEntity<>(fileNames, HttpStatus.OK);
-			} catch (Exception e) {
-				return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-			}
+	//投稿文の詳細照会を要請の時、添付ファイルのリストを持ってくる要請の処理 
+	@GetMapping("/freeboard/file/{boardId}")
+	public ResponseEntity<List<String>> getFileRequest(@PathVariable Integer boardId) {
+
+		try {
+			List<String> fileNames = boardService.getFileNames(boardId);
+			return new ResponseEntity<>(fileNames, HttpStatus.OK);
+		} catch (Exception e) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		}
+	}
 	
-	
-	// 글쓰기 화면 열람 요청 처리
+	//書き物画面の閲覧要請の処理
 	@GetMapping("/freeboard")
 	public ModelAndView write() {
 //		ModelAndView mv = new ModelAndView();
 //		mv.setViewName("freeboard/write");
-//		return mv;	// 한줄로 만들기~
+//		return mv;	//一行で~~
 		return new ModelAndView("freeboard/write");
 		
 		
 	}
 	
-	// 글쓰기 요청 처리
-//	RedirectAttributes: 재요청시에 재요청 페이지에 데이터를 전달해주는 객체
+	//書き物の要請の処理
+//	RedirectAttributes: 再要請の時、再要請のページにデータを伝達するオブジェクト
 	@PostMapping("/freeboard")
 	public ModelAndView write(FreeBoard article, RedirectAttributes ra) {
 		
-		System.out.println("클라이언트가 전달한 신규 게시글 데이터: " + article);
-		System.out.println("클라이언트가 전달한 파일명 목록: " + Arrays.toString(article.getFiles()));
+		System.out.println("クライアントが伝達した新しい投稿データ: " + article);
+		System.out.println("クライアントが伝達したファイル名のリスト: " + Arrays.toString(article.getFiles()));
 		ModelAndView mv = new ModelAndView();
 		
 		boardService.create(article);
@@ -130,14 +129,14 @@ public class FreeBoardController {
 		return mv;
 	}
 	
-	// 게시글 수정 요청 처리
+	//投稿文の修正要請の処理// 게시글 수정 요청 처리
 	@PostMapping("/freeboard/modify/{boardId}")
 	public ModelAndView modifyArticle(@PathVariable Integer boardId
 										, FreeBoard article
 										, RedirectAttributes ra) {
 		ModelAndView mv = new ModelAndView();
-		System.out.println("게시글 수정 요청: " + boardId + "번");
-		System.out.println("수정 정보: " + article);
+		System.out.println("投稿文の修正要請: " + boardId + "번");
+		System.out.println("修正の情報: " + article);
 		boardService.update(article);
 		ra.addFlashAttribute("message", "modSuccess");
 		
@@ -160,11 +159,11 @@ public class FreeBoardController {
 	}
 	*/
 	
-	// 게시글 삭제 요청 처리
+	//投稿文の除去要請の処理
 	@DeleteMapping("/freeboard/{boardId}")
 	public String deleteArticle(@PathVariable Integer boardId) {
 
-		System.out.println("게시글 삭제 요청: " + boardId + "번");
+		System.out.println("投稿の除去要請: " + boardId + "番");
 		boardService.deleteArticle(boardId);
 		
 		return "delSuccess";

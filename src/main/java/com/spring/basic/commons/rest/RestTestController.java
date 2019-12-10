@@ -14,7 +14,7 @@ import com.spring.basic.freeboard.domain.FreeBoard;
 public class RestTestController {
 
 	@GetMapping("/rest/hello")
-	// 리턴데이터를 ViewResolver에게 주지않고 즉시 클라이언트로 전송함.
+	//returnデータをViewResolverに伝達しないで、すぐクライアントへ伝送
 	public String hello() {
 		return "Hello world!!!";
 	}
@@ -24,8 +24,8 @@ public class RestTestController {
 		FreeBoard article = new FreeBoard();
 		
 		article.setBoardId(99);
-		article.setTitle("JSON 전송 테스트");
-		article.setContent("RestController작동중");
+		article.setTitle("JSON 伝送テスト");
+		article.setContent("RestController作動中");
 		article.setWriter("a");
 		
 		return article;
@@ -34,7 +34,7 @@ public class RestTestController {
 	@GetMapping("/rest/list")
 	public List<String> testList() {
 		List<String> list = new ArrayList<>();
-		list.add("야옹이");list.add("멍멍이");list.add("짹짹이");
+		list.add("ぼのぼの");list.add("シマリスくん");list.add("アライグマくん");
 		return list;
 	}
 
@@ -42,9 +42,9 @@ public class RestTestController {
 	public Map<String, Object> testMap() {
 		Map<String, Object> map = new HashMap<>();
 		
-		map.put("이름", "김철수");
-		map.put("나이", 34);
-		map.put("취미", new String[] {"축구", "게임", "음악감상"});
+		map.put("名前", "田中");
+		map.put("年齢", 34);
+		map.put("趣味", new String[] {"サッカー", "ゲーム", "音楽鑑賞"});
 		
 		return map;
 	}

@@ -12,16 +12,16 @@ public interface IFreeBoardService {
 	
 	void create(FreeBoard article);
 	
-	Map<String, Object> selectOne(Integer boardId, Page paging); // 조회라면 결과가 있어야 하니까 FreeBoard 타입
+	Map<String, Object> selectOne(Integer boardId, Page paging); //照会なら結果が要るのでFreeBoard　タイプ
 	List<String> getFileNames(Integer boardId);
 	
 	List<FreeBoard> selectAll(Search paging);
-	Integer countArticles(Search paging);  // 총 게시물 수 구하기
+	Integer countArticles(Search paging);  //総投稿の数を求める
 
 	void update(FreeBoard article);
 
 	
-	// 게시물 삭제를 위한 중간처리를 위한 메서드
+	//投稿の除去についての中間処理メソッド
 	void deleteArticle(Integer boardId);
 	
 	

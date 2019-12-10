@@ -25,7 +25,7 @@ public class UploadTestController {
 	
 //	@Autowired
 //	@Qualifier("uploadPath")
-	@Resource(name="uploadPath")	// 위 두줄이나 이 하나로 사용하기
+	@Resource(name="uploadPath") //上と同じ意味
 	private String uploadPath;
 
 	@GetMapping("/uploadForm")
@@ -33,7 +33,7 @@ public class UploadTestController {
 		return new ModelAndView("test/upload-form");
 	}
 	
-	// 클라이언트가 전송한 파일데이터를 담을 객체 MultipartFile을 매개변수로 지정
+	//クライエントが伝送したファイルを持ってるオブジェクト。MultipartFileをパラメータで指定。
 	@PostMapping("/upload")
 	public ModelAndView upload(MultipartFile file) throws Exception {
 		
@@ -43,7 +43,7 @@ public class UploadTestController {
 		
 		ModelAndView mv = new ModelAndView();
 		
-		// 실제로 서버의 업로드 파일 디렉토리에 업로드를 수행하는 기능
+		//実際にサーバーのディレクターにアップロードする機能
 		String fileName = FileUtils.uploadFile(file, uploadPath);
 		mv.addObject("fileName", fileName);
 		
@@ -51,7 +51,7 @@ public class UploadTestController {
 		return mv;
 	}
 	
-	// drag & drop으로 전송된 파일 저장 요청 처리
+	//drag&dropで伝送されたファイルの格納要請を処理
 	@PostMapping(value = "/uploadAjaxes")
 	public ResponseEntity<String[]> uploadAjaxes(MultipartFile[] files) throws Exception {
 //		System.out.println("original-name: " + file.getOriginalFilename());
@@ -72,78 +72,78 @@ public class UploadTestController {
 		}
 	}
 	
-	// 파일 로드 요청 처리
-	// 요청 URI: /loadFile?fileName=~~~~
+	//ファイルloadの要請を処理
+	// 要請 URI: /loadFile?fileName=~~~~
 	@GetMapping("/loadFile")
-	public ResponseEntity<byte[]> loadFile(String fileName) throws Exception {		// get요청할 때 반드시 byte쪼개서 배열로 묶어서 보낸다.
+	public ResponseEntity<byte[]> loadFile(String fileName) throws Exception {	//get要請する時、必ずbyteで割って配列で送る
 		
-		System.out.println("요청fileName: " + fileName);
-		System.out.println("요청 파일 전체경로: " + uploadPath + fileName);
+		System.out.println("要請fileName: " + fileName);
+		System.out.println("要請ファイルのロケーション: " + uploadPath + fileName);
 		
 		// 클라이언트가 요청한 파일의 전체경로의 객체
 		File file = new File(uploadPath + fileName);
 		if(!file.exists())
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);	// 객체가 없으면 NOT_FOUND 
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);	//オブジェクトがないとNOT_FOUND 
 
 		
 		
-		// 서버에서 파일명을 통해 파일을 로딩함.
-		// 파일 로딩시에는 InputStream객체 사용.
+		//サーバーでfileNameを通じてファイルをローディング。
+		//ファイルのローディングの時、InputStreamオブジェクトを使用。
 		try(InputStream in = new FileInputStream(file)) {
-			// 파일 로딩 성공시 파일을 찾아서 로딩한 후 클라이언트에 전송
+			//ファイルのローディングが成功したら、ファイルを見つけてローディングした後クライエントへ伝送。
 			String ext = FileUtils.getFileExtension(fileName);
 			MediaType mType = FileUtils.getMediaType(ext);
 			
 			
-			// 파일의 MimeType을 HttpHeader에 담아서 클라이언트에 전송
+			//ファイルのMIME(Multipurpose Internet Mail Extensions) TypeをHttpHeaderに入れてクライエントへ伝送
 			HttpHeaders headers = new HttpHeaders();
 			
-			// 이미지인지 여부 확인
-			if(mType != null) {	  // 이미지파일의 경우: 단순 썸네일을 읽어서 보냄.
+			//イメージかどうかの可否確認
+			if(mType != null) {	  //イメージの場合:単純なサムネイルを読んで送る
 				headers.setContentType(mType);
-			} else {	// 이미지파일이 아닌 경우: 첨부파일 다운로드 기능을 붙임.
+			} else {	//イメージじゃないと添付ファイルのダウンロード機能ができる
 				
-				// UUID로 생성한 파일명을 원래대로 되돌리는 작업.
+				//UUIDで生成したファイル名を元に戻す
 				fileName = fileName.substring(fileName.lastIndexOf("_") + 1);
 				
-				// 다운로드 기능을 추가한다.
+				//ダウンロード機能を追加
 				headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 				
-				// 파일명이 한글일 경우 인코딩을 재설정.
+				//ファイル名によってencoding再設定
 				String encodingName = new String(fileName.getBytes("UTF-8"), "ISO-8859-1");
 				
-				// 첨부파일 형태로 다운로드 하겠다.
+				//添付ファイルのタイプでダウンロード
 				headers.add("Content-Disposition", "attachment; filename=\"" + encodingName + "\""); 
-				// 이대로 fileName으로 다운받는다면 다운받은 파일은 지저분한 이름으로 되기때문에 위에 'UUID로 생성한 파일명을 원래대로 되돌리는 작업'을 한다.
-				// 또한 한글 인코딩을 위해 fileName은 encodingName으로 재설정한 변수를 받는다.
+				//このままfileNameでダウンロードしたら、変なファイル名になるから、上の「UUID」の作業をする。
+				//なお、encodingのためfileNameはencodingNameで再設定された変数をもらう
 			}
-			//  1번째 매개값으로 InputStream으로 읽은 파일의 데이터를 바이트 배열로 바꿔서 클라이언트에 응답.
-			//  2번째 매개값으로 헤더정보(headers)를 전송.
+			//一つ目のパラメータ値で…InputStreamで読んだファイルのデータをbyteの配列でかえてクライエントへ伝送
+			//二つ目パラメータ値で…ヘッダー情報(headers)を伝送
 			return new ResponseEntity<>(IOUtils.toByteArray(in), headers, HttpStatus.OK);
 			
 		} catch (Exception e) {
-			// 파일로딩 오류시 클라이언트에게 보낼 데이터 처리
+			//ファイルローディングのエラーの時クライエントへ伝送するデータを処理
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		} // finally 로 in.close() 대신에 try()에 넣어 주었다.
+		} //finallyとしてin.close()の代わりにtry()に入れた
 		
 	}
 	
-	// 서버에 있는 파일 삭제 요청 처리
-	// URI: /deleteFile?fileName=/2019/09/22/s_artwrtqawer_abc.jpg
+	//サーバーにあるファイルについて除去要請の処理
+	// URI: /deleteFile?fileName=/2019/11/17/s_artwrtqawer_abc.jpg
 	@DeleteMapping("/deleteFile")
 	public ResponseEntity<String> deleteFile(String fileName) throws Exception {
 		
 		try {
 			
-			// 파일 삭제
+			//ファイルの除去
 			File delFile = new File(uploadPath + fileName);
 			delFile.delete();
 			
-			// 이미지파일이라면 원본이미지까지 지워야 한다!
+			//イメージファイルなら元のイメージまで消さなければならない!!
 			boolean isImage = FileUtils.getMediaType(FileUtils.getFileExtension(fileName)) != null;
-			if(isImage) {	// 이미지라면~
-				// fileName => 썸네일 이미지의 경로 ex) /2019/09/22/s_artwrtqawer_monkey.gif
-				// originalName => 원본 이미지의 경로 ex) /2019/09/22/artwrtqawer_monkey.gif
+			if(isImage) {	//イメージなら…
+				// fileName => サムネイルのイメージ、ロケーション ex) /2019/11/17/s_artwrtqawer_monkey.gif
+				// originalName => 元のイメージ、ロケーション ex) /2019/11/17/artwrtqawer_monkey.gif
 				int lastSlash = fileName.lastIndexOf("/") +1;
 				String originalName = fileName.substring(0, lastSlash) + fileName.substring(lastSlash +2);
 				File originalImageFile = new File(uploadPath + originalName);

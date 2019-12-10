@@ -16,8 +16,8 @@ import lombok.ToString;
 @NoArgsConstructor
 public class FreeBoard {
 	
-	// camel case : JAVA의 이름 규칙
-	// snake case : SQL, Python, 통신처리 쪽 이름 규칙 (board_id)
+	// camel case : JAVAの名前規則
+	// snake case : SQL、Python、通信処理ほうの名前規則(board_id)
 	private Integer boardId;
 	private String title;
 	private String content;
@@ -27,7 +27,7 @@ public class FreeBoard {
 	private Integer viewCnt;
 	private Integer replyCnt;
 	
-	// 첨부파일들의 이름목록을 저장할 필드
+	//添付ファイルの名前リストを保存するfield
 	private String[] files;
 	
 	

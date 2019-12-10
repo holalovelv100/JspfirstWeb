@@ -3,7 +3,7 @@ package com.spring.basic.commons.paging;
 import lombok.Getter;
 import lombok.Setter;
 
-//  검색기능 + 페이징
+//検索機能　+　ページング
 @Setter
 @Getter
 public class Search extends Page {

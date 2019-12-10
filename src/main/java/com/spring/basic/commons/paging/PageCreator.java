@@ -9,38 +9,38 @@ import lombok.ToString;
 @ToString
 public class PageCreator {
 
-   //페이지번호 정보와 한 페이지당 들어갈 게시물 수의 정보를 갖는 객체
+   //ページ番号の情報と1ページ当たり、入る掲示物数の情報を持ってるオブジェクト
    private Page paging;
-   private Integer articleTotalCount;//게시판의 총 게시물 수
-   private Integer beginPage; //시작 페이지 번호
-   private Integer endPage; //끝 페이지 번호
-   private boolean prev; //이전 버튼 활성화 여부
-   private boolean next; //다음 버튼 활성화 여부
-
-   //한 화면에 제한할 페이지의 개수.
+   private Integer articleTotalCount;//掲示板の総掲示物の数
+   private Integer beginPage; //スタートページ番号
+   private Integer endPage; //ラストページ番号
+   private boolean prev; //以前ボタン、活性化の可否
+   private boolean next; //次のボタン、活性化の可否
+   
+   //１画面に限るページの数
    private final Integer displayPageNum = 10;
 
    public PageCreator(Page paging, Integer articleTotalCount) {
       this.paging = paging;
       this.articleTotalCount = articleTotalCount;
 
-      //보정 전 끝 페이지 구하기
+      //補正する前にラストページ取得
       endPage = (int)Math.ceil(paging.getPage() 
             / (double)displayPageNum)
             * displayPageNum;
 
-      //시작 페이지 번호 구하기
+      //スタートページの番号取得
       beginPage = (endPage - displayPageNum) + 1;
 
-      //현재 시작페이지가 1이라면 이전버튼 활성화 여부를 false로 지정
+      //スタートページが１なら以前ボタンの活性化の可否がfalse
       prev = (beginPage == 1) ? false : true;
 
-      //마지막 페이지인지 여부 확인 후 다음 버튼 비활성.
+      //ラストページかの可否を確かめて次のボタン、非活性。
       next = (articleTotalCount <= (endPage * paging.getCountPerPage())) ? false : true;
 
-      //재보정 여부 판단하기
+      //再補正の可否判断
       if(!isNext()) {
-         //끝 페이지 재보정하기
+         //ラストページ、再補正
          endPage = (int)Math.ceil(articleTotalCount / (double)paging.getCountPerPage());
       }
 

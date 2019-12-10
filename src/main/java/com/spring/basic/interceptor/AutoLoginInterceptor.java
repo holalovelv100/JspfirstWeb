@@ -23,11 +23,11 @@ public class AutoLoginInterceptor extends HandlerInterceptorAdapter implements S
 		
 		HttpSession session = request.getSession();
 		
-		// 1. 자동 로그인 쿠키가 있는지 여부 확인.
+		//1. 自動ログインのcookieあるかの可否確認
 		Cookie loginCookie =  WebUtils.getCookie(request, "loginCookie");
 		if(loginCookie != null) { // 자동로그인을 했다면~
 			
-			// 2. DB에서 쿠키에 저장된 세션아이디값을 가진 회원의 정보를 조회
+			//2. DBでcookieに保存されたSessinId値をもっている会員の情報を照会
 			MvcUser user = userService.getUserWithSessionId(loginCookie.getValue());
 			if(user != null) {
 				session.setAttribute(LOGIN, user);

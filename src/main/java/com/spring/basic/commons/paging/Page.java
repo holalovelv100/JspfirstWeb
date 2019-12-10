@@ -5,17 +5,15 @@ import lombok.Getter;
 @Getter
 public class Page {
 
-	private Integer page; //클라이언트가 요펑한 페이지 정보
-	private Integer countPerPage; // 클라이언트가 요청한 한페이지 당 보여줄 게시물 수
+	private Integer page; //クライアントが要請したページの情報
+	private Integer countPerPage; //クライアントが要請した一つのページからみせる掲示物の数
 	
 	
-	public Page() {  // 생성자로 초기 제어를 하자.
+	public Page() { //コンストラクタで初期化
 		this.page = 1;
 		this.countPerPage = 10;	
 	}
-	
-	
-	// 페이지정보를 DB에 전달할 때 재계산하는 메서드 선언.
+	//ページの情報をDBへ伝達する時、再計算するメソッド宣言。
 	public Integer getPageStart() {
 		return (page - 1) * countPerPage;
 	}

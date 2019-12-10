@@ -26,7 +26,7 @@ public class FreeBoardService implements IFreeBoardService {
 	@Override
 	public void deleteArticle(Integer boardId) {
 
-		// 트랜잭션 처리
+		//トランザクション
 		replyMapper.deleteAll(boardId);
 //		int i = 10 / 0;
 		boardMapper.deleteFileNames(boardId);
@@ -34,7 +34,7 @@ public class FreeBoardService implements IFreeBoardService {
 		
 	}
 
-	@Transactional		// 반복문으로 insert가 여러번 들어가니까?!
+	@Transactional	//insertの繰り返し
 	@Override
 	public void create(FreeBoard article) {
 		boardMapper.create(article);
@@ -51,9 +51,9 @@ public class FreeBoardService implements IFreeBoardService {
 	@Override
 	public Map<String, Object> selectOne(Integer boardId, Page paging) {
 		
-		// 컨트롤러에게 전달하는 맵데이터(원본글 데이터 + 댓글 목록 데이터)
+		//コントローラに伝達するマップデータ(元のデータ + コメントのリストデータ
 		Map<String, Object> returnDatas = new HashMap<>();
-		// 매퍼에게 전달하는 맵데이터(원본글 번호 + 페이지 정보) 
+		//mapperに伝達するマップデータ(元の書き物の番号 + ページの情報) 
 		Map<String, Object> inputDatas = new HashMap<>();
 		
 		inputDatas.put("boardId", boardId);
@@ -62,7 +62,7 @@ public class FreeBoardService implements IFreeBoardService {
 		returnDatas.put("article", boardMapper.selectOne(boardId));
 		returnDatas.put("replies", replyMapper.selectAll(inputDatas));
 		
-		// 조회수 상승 처리
+		//照会数の上がり処理
 		boardMapper.updateViewCnt(boardId);
 		
 		return returnDatas;

@@ -24,7 +24,7 @@ public class FreeBoardReplyController {
 	@Autowired
 	private IFreeBoardReplyService replyService;
 	
-	// 댓글 목록조회 요청
+	//コメントリストの照会要請
 	@GetMapping("/reply/{boardId}/{page}")
 	public Map<String, Object> replyAll(@PathVariable Integer boardId, 
 							@PathVariable Integer page) {
@@ -48,21 +48,21 @@ public class FreeBoardReplyController {
 	
 	
 	
-	// 댓글 쓰기 요청 처리
+	//コメント書くの要請処理
 	@PostMapping("/reply")
 	public String replyWriter(@RequestBody FreeBoardReply reply) {
-		System.out.println("신규 댓글 정보: " + reply);	
+		System.out.println("新しいコメントの情報: " + reply);	
 		replyService.create(reply);
 		
 		return "replyRegSuccess";		
 	}
 	
-	// 댓글 수정 요청 처리
+	//コメント修正の要請処理
 	@PutMapping("/reply/{replyId}")
-	public String replyModify(@PathVariable("replyId") Integer repId, //아노테이션 경로의 {replyId}와 repId 다르기때문에 ("replyId")작성하였다.
+	public String replyModify(@PathVariable("replyId") Integer repId, //アノテーションのロケーションの{replyId}とrepIdが違うから("replyId")で作成。
 							@RequestBody FreeBoardReply reply) {  
 		
-		System.out.println("댓글 수정 요청: " + reply);
+		System.out.println("コメントの修正要請: " + reply);
 		
 		reply.setReplyId(repId);
 		replyService.update(reply);
@@ -71,12 +71,12 @@ public class FreeBoardReplyController {
 	}
 	
 	
-	// 댓글 삭제 요청 처리
+	//コメント除去の要請処理
 	@DeleteMapping("/reply/{replyId}")
 	public String replyDelete(@PathVariable Integer replyId, 
 									Integer boardId) {
 		
-		System.out.println("댓글 삭제 요청: " + replyId + "번");
+		System.out.println("コメント除去の要請: " + replyId + "番");
 		replyService.delete(replyId, boardId);
 	
 		return "replyDelSuccess";

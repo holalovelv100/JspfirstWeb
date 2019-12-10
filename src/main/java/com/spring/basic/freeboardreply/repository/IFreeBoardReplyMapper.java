@@ -7,20 +7,21 @@ import com.spring.basic.freeboardreply.domain.FreeBoardReply;
 
 public interface IFreeBoardReplyMapper {
 
-	// 댓글 쓰기
+	//コメントを書く
 	void create(FreeBoardReply reply);
 	
-	// 댓글 수정 기능
+	//コメント修正の機能
 	void update(FreeBoardReply reply);
 	
-	// 댓글 삭제 기능
+	//コメント除去の機能
 	void delete(Integer replyId);
 	
-	// 원본 게시물 삭제시 해당 게시물의 댓글 전체 삭제
+	//元の投稿を消すと該当投稿のコメントも全部除去
 	void deleteAll(Integer boardId);
 	
-	// 댓글 목록 조회 기능
-	List<FreeBoardReply> selectAll(Map<String, Object> datas);	// 3개가 필요하니 묶어 버렸다.
+	//コメントリストの照会機能
+	List<FreeBoardReply> selectAll(Map<String, Object> datas);
 	
+	//特定な投稿の総コメント数を照会する機能
 	Integer countReplies(Integer boardId);
 }

@@ -29,53 +29,49 @@ public class LoginInterceptor extends HandlerInterceptorAdapter implements Sessi
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
-		// 요청객체에서 세션객체 획득
+		//要請オブジェクトからセッションオブジェクトを獲得
 		HttpSession session = request.getSession();
 		
-		// 로그인이 성공한 이후 처리 로직
+		//ログインが成功した後からの処理
 		MvcUser user =  (MvcUser)modelAndView.getModel().get("user");
 		
 		if(user != null) {
-			System.out.println("로그인 성공!");
+			System.out.println("ログイン成功!");
 			session.setAttribute(LOGIN, user);
 			
-			// 자동로그인 처리(null이면 체크 안한거)
+			//自動ログインの処理(null => チェックX)
 			if(request.getParameter("isAutoLogin") != null) {	
 				System.out.println("자동 로그인 체크함!!");
-				// 자동로그인 쿠키 생성 : 쿠키에 로그인 당시의 고유 세션키(ID)를 저장.
+				//自動ログインのcookie生成: cookieにログインする時の固有なセッションキーを保存
 				Cookie loginCookie = new Cookie("loginCookie", session.getId());
-				// 쿠키정보 설정
+				//cookieの情報設定
 				loginCookie.setPath("/");
-				loginCookie.setMaxAge((int)LIMIT_TIME); // 초단위
+				loginCookie.setMaxAge((int)LIMIT_TIME); //秒単位
 				
-				// 클라이언트에 쿠키 저장.
+				//クライアントにcookie保存
 				response.addCookie(loginCookie);
 			}
-			
 			redirectAttempted(response, session);
-			
-			
 		}
 		
 	}
 
-	// refactor로 redirectAttempted라는 이름으로 메서드 추출했다. 
+	//refactor、redirectAttemptedという名前でメソッドを抽出 
 	private void redirectAttempted(HttpServletResponse response, HttpSession session) throws IOException {
-		// 로그인 전 페이지로 리다이렉트
+		//ログイン前のページへのredirect
 		String attempted = (String)session.getAttribute(ATTEMPTED);
 		if(attempted != null) {
-			response.sendRedirect(attempted);	// 리다이렉트 할때는 value
-			session.removeAttribute(ATTEMPTED);	// 리무브할때는 상수 key를 받아서
+			response.sendRedirect(attempted);	//redirectの時はvalue
+			session.removeAttribute(ATTEMPTED);	//removeの時は常数keyをもらって
 		} else if(session.getAttribute("check") != null) {
-			// 댓글 로그인 상황
+			//コメントする時のログイン状況
 			response.sendRedirect("/freeboard/" + session.getAttribute("check"));
 			session.removeAttribute("check");
 		} else {
 			response.sendRedirect("/");
 		}
 	}
-	
-	
+		
 }//end class
 
 

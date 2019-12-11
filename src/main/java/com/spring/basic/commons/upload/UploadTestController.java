@@ -80,7 +80,7 @@ public class UploadTestController {
 		System.out.println("要請fileName: " + fileName);
 		System.out.println("要請ファイルのロケーション: " + uploadPath + fileName);
 		
-		// 클라이언트가 요청한 파일의 전체경로의 객체
+		//クライアントが要請したファイルの全体ロケーションのオブジェクト
 		File file = new File(uploadPath + fileName);
 		if(!file.exists())
 			return new ResponseEntity<>(HttpStatus.NOT_FOUND);	//オブジェクトがないとNOT_FOUND 

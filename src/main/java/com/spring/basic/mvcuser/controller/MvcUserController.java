@@ -33,7 +33,7 @@ public class MvcUserController {
 	@Autowired
 	private KakaoService kakaoService;
 	
-	//회원등록 요청처리 테스트 메서드
+	//会員登録を要請処理するテストメソッド
 	@PostMapping("/regTest")
 	public String regTest(@RequestBody MvcUser user) {
 		System.out.println("param: " + user);
@@ -41,18 +41,18 @@ public class MvcUserController {
 		return "regSuccess";
 	}
 	
-	// 데이터(계정, 이메일) 중복체크 요청
+	//データ(account, email)の中腹チェックを要請 
 	@GetMapping("/check")
 	public ResponseEntity<String> check(String info, String kind) {
 		
-//		System.out.println("중복체크 종류: " + kind);
-//		System.out.println("중복체크할 데이터: " + info);
+//		System.out.println("中腹チェックの種類: " + kind);
+//		System.out.println("中腹チェックのデータ: " + info);
 		
 		try {
 			boolean flag =userService.isDuplicate(kind, info);
-			if(flag) { // 데이터가 중복데이터
+			if(flag) { //中腹データ
 				return new ResponseEntity<>("true", HttpStatus.OK);
-			} else { // 데이터가 중복
+			} else {
 				return new ResponseEntity<>("false", HttpStatus.OK);
 			}
 		} catch(Exception e) {
@@ -69,14 +69,14 @@ public class MvcUserController {
 //		return mv;
 //	}
 	
-	//회원등록 페이지 화면 요청처리 메서드
+	//会員登録ページ画面の要請処理メソッド
 	@GetMapping("/register")
 	public ModelAndView registerGET() {
 		return new ModelAndView("user/register");		
 	}
 	
 	
-	//회원등록 요청처리 메서드
+	//会員登録の要請処理メソッド//회원등록 요청처리 메서드
 	@PostMapping("/register")
 	public ModelAndView register(MvcUser regData) {
 
@@ -87,18 +87,18 @@ public class MvcUserController {
 		return mv;      
 	}
 	
-	// 로그인 페이지 화면 요청처리 메서드
+	//ログインページ画面の要請処理メソッド
 	@GetMapping("/login")
 	public ModelAndView login(Integer check, HttpSession session) {
 
-		// check => 글번호
+		// check => 書き物の番号
 		if(check != null)
 			session.setAttribute("check", check);
 		return new ModelAndView("user/login");
 	}
 	
 	
-	//로그인 검증 요청처리 메서드
+	//ログイン検証の要請処理メソッド
 	@PostMapping("/loginCheck")
 	public ModelAndView loginCheck(LoginDTO loginData, HttpServletRequest request) {
 		
@@ -112,12 +112,12 @@ public class MvcUserController {
 		if(user != null) {
 			if(encoder.matches(loginData.getPassword(), user.getPassword())) {
 				
-				//최종 로그인 시간 갱신
+				//最終ログインの時間更新
 				userService.updateLastLoginTime(user.getAccount());
 				
-				// 자동로그인 DB처리
+				//自動ログインのDB処理
 				long expiredDate = System.currentTimeMillis() + SessionNames.LIMIT_TIME * 1000; 
-				Date limitDate = new Date(expiredDate);	// DB에는 밀리초가 아닌 Date로 넣어 줘야 한다.
+				Date limitDate = new Date(expiredDate);	//DBにはミリ秒ではないデータで入れる
 				userService.keepLogin(session.getId(), limitDate, loginData.getAccount());
 				
 				
@@ -133,7 +133,7 @@ public class MvcUserController {
 		
 	}
 	
-	// 로그아웃 요청처리
+	//ログアウトの要請処理
 	@GetMapping("/logout")
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		
@@ -148,15 +148,15 @@ public class MvcUserController {
 			}
 
 			session.removeAttribute(SessionNames.LOGIN);
-			session.invalidate(); //세션 객체 통채로 무효화
+			session.invalidate();//sessionオブジェクトを無効
 
-			//로그아웃 시 자동로그인 쿠키 삭제 및 해당 회원 정보에서 session_id제거
+			//ログアウトの時、自動ログインcookieを除去および該当会員の情報からsessin_id除去
 			/*
-			 1. loginCookie를 읽어온 뒤 해당 쿠키가 존재하는지 여부 확인
-			 2. 쿠키가 존재한다면 쿠키의 수명을 0초로 다시 설정한 후(setMaxAge사용)
-			 3. 응답객체를 통해 로컬에 0초짜리 쿠키 재전송 -> 쿠키 삭제
-			 4. service를 통해 keepLogin을 호출하여 DB컬럼 레코드 재설정
-			   (session_id -> "none", limit_time -> 현재시간으로)
+			 1. loginCookieを読んだ後、該当cookieが存在するかの可否確認
+			 2. cookieが存在するとcookieの寿命を0秒で再び設定(setMaxAge使用)
+			 3. 応答オブジェクトを通じてロカールに0秒のcookieを再転送 -> cookie除去
+			 4. serviceを通じてkeepLoginを呼び出してDBコラムレコードの再設定
+			   (session_id -> "none", limit_time -> 現在時間で)
 			 */
 			Cookie loginCookie = WebUtils.getCookie(request, "loginCookie");	//getCookie마우스대고 F3/내용을 보면 쿠키 찾게 돌려준다.
 			if(loginCookie != null) {

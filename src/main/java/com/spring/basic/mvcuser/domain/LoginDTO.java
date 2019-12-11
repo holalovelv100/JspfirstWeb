@@ -13,6 +13,6 @@ public class LoginDTO {
 
 	private String account;
 	private String password;
-	private boolean isAutoLogin; // 자동로그인 체크 여부
+	private boolean isAutoLogin; // 自動ログインのチェック可否
 	
 }

@@ -6,22 +6,22 @@ import com.spring.basic.mvcuser.domain.MvcUser;
 
 public interface IMvcUserService {
 
-	//회원정보 등록 
+	//会員登録の機能
 	void register(MvcUser user);
 
-	//데이터 중복체크
+	//中腹確認のチェック
 	boolean isDuplicate(String kind, String info);
 
-	//단일회원 정보 조회
+	//会員情報の照会機能
 	MvcUser getUserInfo(String account);
 
-	//자동로그인 쿠키값 저장처리
+	//自動ログインのcookie値をDBに保存する機能
 	void keepLogin(String sessionId, Date limitTime, String account);
 
-	//쿠키값으로 회원정보 불러오기 기능
+	//cookie値で会員情報を持ってくる機能
 	MvcUser getUserWithSessionId(String sessionId);
 
-	//최종로그인 시간 갱신
+	//最終ログインの時間更新
 	void updateLastLoginTime(String account);
 	
 	//카카오로그인한 회원정보 조회

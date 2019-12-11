@@ -31,8 +31,8 @@ public class MvcUserService implements IMvcUserService {
 	@Override
 	public boolean isDuplicate(String kind, String info) {
 		
-		System.out.println("중복체크 종류: " + kind);
-		System.out.println("중복체크할 데이터: " + info);
+		System.out.println("中腹チェックの種類: " + kind);
+		System.out.println("中腹チェックのデータ: " + info);
 		
 		Map<String, Object> datas = new HashMap<>();
 		datas.put("kind", kind);

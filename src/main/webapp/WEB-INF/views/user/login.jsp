@@ -13,7 +13,7 @@
 <body>
 <jsp:include page="../include/header.jsp" />
 
-<!-- 로그인 양식 -->
+<!-- ログイン様式 -->
 
 <div class="virtual-box"></div>
 <div class="container">
@@ -21,7 +21,7 @@
 		<div class="offset-md-2 col-md-4">
 			<div class="card" style="width:200%;">
 				<div class="card-header text-white" style="background: #343A40;">
-					<h2><span style="color: gray;">MVC</span> 로그인</h2>					
+					<h2><span style="color: gray;">MVC</span> ログイン</h2>					
 				</div>
 				<div class="card-body">
 					<form action="/loginCheck" name="izone-sign-in" method="post" id="signInForm"
@@ -29,7 +29,7 @@
 					<table style="cellpadding: 0; cellspacing: 0; margin: 0 auto; width: 100%">
 						<tr>
 							<td style="text-align: left">
-								<p><strong>아이디를 입력해주세요.</strong>&nbsp;&nbsp;&nbsp;<span id="idCheck"></span></p>
+								<p><strong>IDを入力してください。</strong>&nbsp;&nbsp;&nbsp;<span id="idCheck"></span></p>
 							</td>
 						</tr>
 						<tr>
@@ -41,7 +41,7 @@
 						</tr>
 						<tr>
 							<td style="text-align: left">
-								<p><strong>비밀번호를 입력해주세요.</strong>&nbsp;&nbsp;&nbsp;<span id="pwCheck"></span></p>
+								<p><strong>Passwordを入力してください。</strong>&nbsp;&nbsp;&nbsp;<span id="pwCheck"></span></p>
 							</td>
 						</tr>
 						<tr>
@@ -52,13 +52,13 @@
 								placeholder="최소 8자"></td>
 						</tr>
 						
-						<!-- 자동 로그인 체크박스 -->
+						<!-- 自動ログインのチェックボックス -->
 						<tr>
 							<td>
 								<label for="auto-login">
 									<span>
 									<i class="fa fa-sign-in" aria-hidden="true"></i> 
-									자동 로그인
+									自動ログイン
 									<input type="checkbox" id="auto-login" name="isAutoLogin">
 									</span>
 								</label>
@@ -67,7 +67,7 @@
 						
 						<tr>
 							<td style="padding-top: 10px; text-align: center">
-								<p><strong>로그인하셔서 더 많은 서비스를 이용해보세요!</strong></p>
+								<p><strong>ログインして最も良いサービスを利用してください。</strong></p>
 							</td>
 						</tr>
 						<tr>
@@ -83,7 +83,7 @@
 								<a class="btn form-control tooltipstered" data-toggle="modal"
 								href="#sign-up"
 								style="cursor: pointer; margin-top: 0; height: 40px; color: white; background-color: gray; border: 0px solid #388E3C; opacity: 0.8">
-									회원가입</a>
+									会員加入</a>
 							</td>
 						</tr>
 						<tr>
@@ -107,7 +107,7 @@
 <script>
 const regResult = "${regResult}";
 if (regResult === "OK") {
-	alert("회원가입 성공! 로그인해주세요!");
+	alert("会員加入　成功! ログインしてください!");
 }
 </script>
 </body>
